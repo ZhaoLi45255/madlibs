@@ -2,32 +2,47 @@
 ## Mad Libs generator
 
 import time
-## import nltk
+import string
+import nltk
 
-story = ["There was a boy named ", "__PROPN__", ".\n", "He liked to ", "__VRB__"]
-finalStory = ""
+## All strings beginning with "__" are input signs.
+## __PROPN = proper noun
+## __VRB = verb
 
-for i in range(0, len(story)):
-	question = ""
-	if story[i] == "__PROPN__":
-		print("Hello, world!")
-		question = "Name a proper noun: "
-	elif story[i] == "__VRB__":
-		print("This is a verb!")
-		question = "Name a verb: "
-	if question != "":
-		myInput = input(question)
-		story[i] = myInput
-	question = ""
-	finalStory += story[i]
-	time.sleep(1)
-print(finalStory)
+lineList = [] ## List that will contain all the lines in the text.
+finalStory = "" ## The string that will contain the final version of the mad lib.
+punctExceptions = [string.punctuation, ".", "'s", \
+				   "'t", "'m", "'ve"] ## All the punctuation and contractions to skip over.
 
-"""
-with open("testfile.txt") as file:
+with open("easy/testfile1.txt") as file:
 	for line in file:
-		tokens = nltk.word_tokenize(line)
-		tagged = nltk.pos_tag(tokens)
-		print(tokens)
-		print(tagged)
+		lineList.append(line)
 """
+for i in lineList:
+	print(i, end="")
+	time.sleep(1)
+print()
+"""
+
+for line in lineList:
+	count = 0
+	for word in line.split():
+		question = "" ## Always reset the question
+		wordToAdd = word 
+		if word in punctExceptions: ## If the word is a punctuation or a contraction, do not add a space.
+			finalStory += wordToAdd
+			continue
+		else:
+			if count != 0: ## Make sure that no space is added before the first word.
+				finalStory += " "
+		if word == "__PROPN":
+			question = "Name a proper noun: "
+		elif word == "__VRB":
+			question = "Name a verb: "
+		if question != "": ## Question should be blank if it hasn't detected an input sign
+			wordToAdd = input(question)
+		finalStory += wordToAdd ## Add the word to the final version of the story.
+		count += 1
+		time.sleep(1)
+	finalStory += "\n"
+print(finalStory)
