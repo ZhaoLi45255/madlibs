@@ -3,18 +3,15 @@
 import time
 import string
 
-# All strings beginning with "__" are input signs.
-# __PROPN = proper noun
-# __VRB = verb 
-# __ADJ = adjective
-# __N = singular noun
-# __PLN = plural noun
-# __ING = verb ending in "-ing"
-# __NUM = number
-
-punctExceptions = ["'s", "'t", "'m", "'ve", "'d", "'ll", "'re"] # All the punctuation and contractions to skip over.
-for char in string.punctuation: # Add the punctuation marks
-		punctExceptions.append(char)
+# All strings beginning with "_" are input signs.
+# @PROPN = proper noun
+# _VRB = verb 
+# _ADJ = adjective
+# _N = singular noun
+# _PLN = plural noun
+# _ING = verb ending in "-ing"
+# _NUM = number
+# _POSSN = possessive noun
 
 def main():
 	finalStory = "" # The string that will contain the final version of the mad lib.
@@ -25,36 +22,39 @@ def main():
 	fillStory(finalStory, lineList)
 
 def fillStory(result, lineList):
+	lastPunc = " "
 	for line in lineList:
 		count = 0
 		for word in line.split():
 			question = "" # Always reset the question
-			wordToAdd = word 
-			if word in punctExceptions: # If the word is a punctuation mark or a contraction, do not add a space.
-				result += wordToAdd
-				continue
-			else:
-				if count != 0: # Make sure that no space is added before the first word.
-					result += " "
-
-			if word == "__PROPN":
+			wordToAdd = word
+			if lastPunc != " ":
+				result += " "
+			lastPunc = " " # Reset the last punctuation mark
+			if word[0] == "_":
+				check = word[len(word) - 1]
+				if check == "." or check == "?" or check == "!" or check == ",":
+					lastPunc = check
+			if "_PROPN" in word:
 				question = "Name a proper noun: "
-			elif word == "__VRB":
+			elif "_VRB" in word:
 				question = "Name a verb: "
-			elif word == "__ADJ":
+			elif "_ADJ" in word:
 				question = "Name an adjective: "
-			elif word == "__N":
+			elif "_NOUN" in word:
 				question = "Name a noun: "
-			elif word == "__PLN":
+			elif "_PLN" in word:
 				question = "Name a plural noun: "
-			elif word == "__ING":
+			elif "_ING" in word:
 				question = "Name an -ing word: "
-			elif word == "__NUM":
+			elif "_NUM" in word:
 				question = "Name a number: "
+			elif "_POSSN" in word:
+				question = "Name a possessive noun: "
 
 			if question != "": # No input is asked for if the question is blank
 				wordToAdd = input(question)
-			result += wordToAdd # Add the word to the final version of the story.
+			result += wordToAdd + lastPunc # Add the word and either a space or a punctuation mark to the final story.
 			count += 1
 			time.sleep(1)
 		result += "\n" # Start a new line after the current line is done
