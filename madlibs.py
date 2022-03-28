@@ -2,6 +2,7 @@
 
 import time
 import string
+import nltk
 
 # All strings beginning with "_" are input signs.
 # @PROPN = proper noun
@@ -16,10 +17,11 @@ import string
 def main():
 	finalStory = "" # The string that will contain the final version of the mad lib.
 	lineList = [] # List that will contain all the lines in the text.
-	with open("easy/testfile2.txt") as file:
+	with open("random/testfile1.txt") as file:
 		for line in file:
 			lineList.append(line)
-	fillStory(finalStory, lineList)
+	randStory(lineList)
+	#fillStory(finalStory, lineList)
 
 def fillStory(result, lineList):
 	lastPunc = " "
@@ -60,5 +62,13 @@ def fillStory(result, lineList):
 		result += "\n" # Start a new line after the current line is done
 	print(result)
 
+def randStory(lineList):
+	for i in lineList:
+		tokens = nltk.word_tokenize(i)
+		tagged = nltk.pos_tag(tokens)
+		for j in tagged:
+			if "NNP" in j:
+				print("Hello, world!")
+				time.sleep(1)
 if __name__ == "__main__":
     main()
