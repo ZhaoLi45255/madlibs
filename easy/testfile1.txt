@@ -1,3 +1,4 @@
-There once was a boy named _PROPN.
-He didn't like to _VRB.
-His _POSSN name is Mr. John Smith.
+There once was a boy named NNP.
+He didn't like to VB.
+His NN's name is Mr. John Smith.
+NNS are his favorite thing.
